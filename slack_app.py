@@ -17,7 +17,7 @@ from slack_bolt.adapter.socket_mode import SocketModeHandler
 from slack_sdk.errors import SlackApiError
 
 # Import our animales agent
-from animales_agent import get_animales_agent, run_agent
+from animales_agent import run_agent
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -26,8 +26,6 @@ logger = logging.getLogger(__name__)
 # Initialize the Slack app
 app = App(token=os.environ.get("SLACK_BOT_TOKEN"))
 
-# Get the animales agent
-animales_agent = get_animales_agent()
 
 # Store conversation states (thread_ts -> agent_state)
 conversation_states: Dict[str, Any] = {}

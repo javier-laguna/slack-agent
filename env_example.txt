@@ -1,0 +1,10 @@
+# Google Gemini API
+# Obtén tu API key en: https://ai.google.dev/
+GEMINI_API_KEY=tu_api_key_de_gemini_aqui
+
+# Slack Configuration
+# Bot Token (obtener después de instalar la app en Slack)
+SLACK_BOT_TOKEN=xoxb-tu-bot-token-aqui
+
+# App-Level Token (obtener en Socket Mode de la app de Slack)
+SLACK_SOCKET_TOKEN=xapp-tu-app-token-aqui

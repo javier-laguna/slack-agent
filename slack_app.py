@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Slack AI App for Cost Analyzer Agent
-Integrates the GCP Cost Analyzer Agent with Slack's AI Apps feature
+Slack AI App for Animales Agent
+Integrates the Animales Agent with Slack's AI Apps feature
 """
 
 import os
@@ -36,8 +36,8 @@ conversation_states: Dict[str, Any] = {}
 def handle_assistant_thread_started(event, say, client):
     """Handle when a user starts a new AI app conversation"""
     try:
-        thread_ts = event.get("thread_ts")
-        channel_id = event.get("context", {}).get("channel_id")
+        thread_ts = event.get("thread_ts") or event.get("assistant_thread", {}).get("thread_ts")
+        channel_id = event.get("context", {}).get("channel_id") or event.get("assistant_thread", {}).get("channel_id")
         
         logger.info(f"New AI app thread started: {thread_ts}")
         logger.info(f"Channel ID: {channel_id}")
@@ -59,15 +59,27 @@ def handle_assistant_thread_started(event, say, client):
             status="🐾 Iniciando agente de animales..."
         )
         
-        # Set suggested prompts
+        # Set suggested prompts with correct format
         client.assistant_threads_setSuggestedPrompts(
             channel_id=channel_id,
             thread_ts=thread_ts,
             prompts=[
-                "¿Cuáles son los animales más rápidos del mundo?",
-                "What is the largest animal on Earth?",
-                "¿Por qué los gatos ronronean?",
-                "How do penguins survive in cold weather?"
+                {
+                    "title": "Animales rápidos",
+                    "message": "¿Cuáles son los animales más rápidos del mundo?"
+                },
+                {
+                    "title": "Animal más grande",
+                    "message": "What is the largest animal on Earth?"
+                },
+                {
+                    "title": "Gatos",
+                    "message": "¿Por qué los gatos ronronean?"
+                },
+                {
+                    "title": "Pingüinos",
+                    "message": "How do penguins survive in cold weather?"
+                }
             ]
         )
         
@@ -102,7 +114,7 @@ Soy tu asistente especializado en responder preguntas sobre animales. Puedo ayud
 def handle_assistant_thread_context_changed(event, say, client):
     """Handle when user changes context (opens different channel)"""
     try:
-        thread_ts = event.get("thread_ts")
+        thread_ts = event.get("thread_ts") or event.get("assistant_thread", {}).get("thread_ts")
         context = event.get("context", {})
         
         logger.info(f"AI app context changed: {thread_ts} -> {context}")
@@ -115,10 +127,10 @@ def handle_message(event, say, client):
     """Handle incoming messages in AI app threads"""
     try:
         # Only handle messages in AI app threads
-        if not event.get("thread_ts"):
+        thread_ts = event.get("thread_ts") or event.get("assistant_thread", {}).get("thread_ts")
+        if not thread_ts:
             return
             
-        thread_ts = event.get("thread_ts")
         channel_id = event.get("channel")
         user_message = event.get("text", "").strip()
         user_id = event.get("user")
@@ -211,9 +223,10 @@ def handle_message(event, say, client):
         logger.error(f"Error in message handler: {e}")
         try:
             # Try to send error message
+            thread_ts = event.get("thread_ts") or event.get("assistant_thread", {}).get("thread_ts")
             say(
                 text="❌ Ocurrió un error inesperado. Por favor, intenta de nuevo.",
-                thread_ts=event.get("thread_ts")
+                thread_ts=thread_ts
             )
         except:
             pass

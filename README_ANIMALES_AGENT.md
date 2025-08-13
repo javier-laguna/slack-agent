@@ -96,14 +96,14 @@ python slack_app.py
 
 - **get_current_datetime**: Obtiene información de fecha y hora actual (útil para comportamientos estacionales, patrones de migración, etc.)
 
-## Diferencias con el Agente Anterior
+## Características del Agente
 
-- ❌ **Eliminado**: Todas las herramientas de BigQuery
-- ❌ **Eliminado**: Análisis de costos de GCP
-- ✅ **Nuevo**: Enfoque exclusivo en animales
-- ✅ **Nuevo**: Respuestas educativas y entretenidas
-- ✅ **Mantenido**: Integración con Slack
-- ✅ **Mantenido**: Estructura de LangGraph
+- ✅ **Especializado**: Enfoque exclusivo en animales
+- ✅ **Educativo**: Respuestas educativas y entretenidas
+- ✅ **Integrado**: Integración completa con Slack
+- ✅ **Moderno**: Estructura de LangGraph
+- ✅ **Multilingüe**: Soporte para español e inglés
+- ✅ **Herramientas**: Utiliza herramienta de fecha/hora para comportamientos estacionales
 
 ## Configuración de Slack
 
